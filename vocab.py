@@ -1,12 +1,15 @@
 import json
+from typing import Dict
+from transformers import AutoTokenizer
 
-file = "/nasdata/Model/CodeLlama-7b-hf/tokenizer.json"
-# file = "/nasdata/Model/deepseek-coder-6.7b-base/tokenizer.json"
-with open(file, 'r') as f:
-    js = json.loads(f.read())
-    
-model = js["model"]
-vocab = model["vocab"]
+'''
+统计词表中有多少个中英文以外的词
+需要指定
+file: 分词器的路径
+'''
+
+file = "/nasdata/Model/CodeLlama-7b-hf"
+
 
 def classify_char(char: str) -> bool:
     if '\u4e00' <= char <= '\u9fff':
@@ -18,12 +21,18 @@ def classify_char(char: str) -> bool:
     else:
         return False
 
-count = 0
-for key in vocab.keys():
-    count += 1
-    for i in range(len(key)):
-        if not classify_char(key[i]):
-            count -= 1
-            break
-        
-print(count)
+if __name__ == "__main__":
+    
+    tokenizer = AutoTokenizer.from_pretrained(file)
+
+    vocab = tokenizer.vocab
+
+    count = 0
+    for key in vocab.keys():
+        count += 1
+        for i in range(len(key)):
+            if not classify_char(key[i]):
+                count -= 1
+                break
+            
+    print(count)

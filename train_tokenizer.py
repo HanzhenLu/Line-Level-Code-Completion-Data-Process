@@ -16,7 +16,7 @@ tokenizer = Tokenizer(BPE(unk_token="<UNK>"))
 # tokenizer.add_special_tokens(["<UNK>", "<BOS>", "<EOS>", "<PAD>", "<MASK>", "<PREFIX>", "<SUFFIX>", "<MIDDLE>", "<4BLANK>", "<8BLANK>", "<16BLANK>"])
 tokenizer.add_special_tokens(["<UNK>", "<BOS>", "<EOS>", "<PAD>", "<MASK>", "<PREFIX>", "<SUFFIX>", "<MIDDLE>"])
 tokenizer.normalizer = NFKC()
-tokenizer.pre_tokenizer = pre_tokenizers.ByteLevel()
+tokenizer.pre_tokenizer = pre_tokenizers.ByteLevel(add_prefix_space=False)
 tokenizer.decoder = decoders.ByteLevel()
 
 trainer = trainers.BpeTrainer(vocab_size=16000, show_progress = True, initial_alphabet = keyword.kwlist, \

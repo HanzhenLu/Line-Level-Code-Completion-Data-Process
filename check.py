@@ -4,7 +4,7 @@ import tokenize
 import io
 from typing import Optional
 
-def check_syntax(code:str, blob_id:str) -> bool:
+def check_syntax(code:str, blob_id:str="<unknown>") -> bool:
     try:
         _ = ast.parse(code, filename=blob_id)
         return True
