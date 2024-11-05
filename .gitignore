@@ -1,0 +1,7 @@
+# 忽视所有文件夹
+**/*/
+
+*.ipynb
+*.sh
+
+repo_dedupe.py

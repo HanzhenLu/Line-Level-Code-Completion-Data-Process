@@ -11,7 +11,7 @@ path: 来提供数据集路径
 tokenizer: 分词器的载入路径
 max_workers: 多进程的进程数
 '''
-path = "/data/hanzhenlu/dataset/Stack-V2-python-spaces-parquet-sample"
+path = "/data/hanzhenlu/dataset/Python-deduped/deduplicated"
 tokenizer = AutoTokenizer.from_pretrained("tokenizer_bbpe_keywords")
 max_workers = 40
 
@@ -20,7 +20,13 @@ total_tokens = 0
 
 def process_file(file:str) -> float:
     full_path = os.path.join(path, file)
-    table = pd.read_parquet(full_path)
+    extension_name = full_path.split('.')[-1]
+    if extension_name == "parquet":
+        table = pd.read_parquet(full_path)
+    elif extension_name == "arrow":
+        table = pd.read_feather(full_path)
+    else:
+        raise RuntimeError("提供了一个不支持的文件类型")
     texts = table['text'].tolist()
     count = 0.0
     for text in texts:
