@@ -6,7 +6,7 @@ from tokenizers.normalizers import NFKC
 from transformers import LlamaTokenizerFast
 
 datasets_path = "/data/hanzhenlu/dataset/Stack-V2-python-spaces-txt"
-save_path = "tokenizer_bbpe_keywords"
+save_path = "tokenizer_bbpe_keywords" 
 
 if not os.path.exists(save_path):
     os.makedirs(save_path)

@@ -4,11 +4,9 @@ import tokenize
 import io
 import argparse
 import os
-import pandas as pd
-from concurrent.futures import ProcessPoolExecutor, as_completed
 from transformers import PreTrainedTokenizer, AutoTokenizer
 from typing import List, Dict, Optional, Union
-from datasets import Dataset, DatasetDict, load_from_disk, load_dataset
+from datasets import DatasetDict, load_from_disk, load_dataset
 from functools import partial
 
 class Group:
@@ -42,7 +40,6 @@ def split_and_tokenize(tokenizer: "PreTrainedTokenizer", code:str, keywords_list
             cur_pos += step
     
     return {
-        # 额外塞一个eos进去
         "input_ids": [id for snippet in tokenized_results for id in snippet["input_ids"]],
         "attention_mask": [mask for snippet in tokenized_results for mask in snippet["attention_mask"]]
     }
@@ -279,9 +276,9 @@ def tokenize_batch(batch, tokenizer:AutoTokenizer):
     return return_batch
 
 def main():
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser("Preprocess and tokenize datasets for training.")
     
-    parser.add_argument("--datasets_path", help="specify the directory containing the raw datasets.", required=True)
+    parser.add_argument("--datasets_path", help="specify the directory containing the raw datasets to be processed.", required=True)
     parser.add_argument("--output_path", help="specify the directory where the processed datasets will be saved.", required=True)
     parser.add_argument("--do_FIM", action="store_true", help="create a dataset for filling in the middle or for next token prediction")
     parser.add_argument("--save_code", action="store_true", help="whether to save the prefix, middle and suffix")
